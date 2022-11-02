@@ -1,0 +1,305 @@
+:root {
+    --font-system: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --text: white;
+    --text-alt: rgb(211, 211, 211);
+
+    --bg: rgba(56, 56, 56);
+    --bg-transparent: rgba(56, 56, 56, 0.7);
+    --border-color: rgb(85, 85, 85);
+    --hover-color: rgba(255, 255, 255, 0.1); /* Dark: rgba(0, 0, 0, 0.1) */
+
+    --active-color: rgba(255, 255, 255, 0.2);
+
+    --blur: blur(32px);
+    --dock-height: 36px;
+}
+
+/* Universal */
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+
+    user-select: none;
+    -webkit-user-drag: none;
+    object-fit: contain;
+}
+button {
+    color: var(--text);
+    font-family: var(--font-system);
+    font-size: 13pt;
+    /* width: 40px; */
+    background-color: unset;
+    border: none;
+}
+
+body {
+    font-family: var(--font-system);
+    font-size: 11pt;
+
+    margin: 0;
+    background-color: rgb(39, 39, 39);
+    color: var(--text);
+
+    overflow: hidden;
+}
+.flex { display: flex; }
+
+
+#container {
+    position: absolute;
+    /* top: 0; right: 0; bottom: 0; top: 0; */
+    width: 100%;
+    height: 100vh;
+
+    background-color: rgb(0, 0, 0);
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* Application */
+#app_container {
+    position: absolute;
+    z-index: 1;
+    top: 0; right: 0; bottom: var(--dock-height); left: 0;
+    /* border: 1px solid red; */
+    pointer-events: none;
+}
+.window {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    overflow: hidden;
+
+    background-color: var(--bg-transparent);
+    backdrop-filter: var(--blur);
+    color: var(--text);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+
+    display: flex;
+    flex-direction: column;
+
+    pointer-events: all;
+    animation: window_open 0.22s ease;
+    resize: both;
+
+    transition-property: opacity, transform;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+}
+@keyframes window_open {
+    from {
+        transform: scale(0.98, 0.98) translateY(6px);
+        opacity: 0;
+    }
+}
+.window_close {
+    animation: window_close 0.1s ease-in forwards !important;
+    pointer-events: none;
+}
+@keyframes window_close {
+    to {
+        transform: scale(0.98, 0.98) translateY(6px);
+        opacity: 0;
+    }
+}
+
+/* State */
+.window.state_max {
+    width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    border-radius: 0;
+    resize: none;
+
+    animation: window_open 0.22s ease, window_max 0.2s ease;
+}
+@keyframes window_max {
+    from {
+        transform: scale(0.98, 0.98);
+        opacity: 0.8;
+    }
+}
+.window.state_min {
+    transform: scale(0.9, 0.9) translateY(120px);
+    opacity: 0;
+
+    pointer-events: none;
+    resize: none;
+
+    animation: window_open 0.22s ease;
+}
+
+/* Title bar */
+.window .title_bar {
+    width: 100%;
+    height: 36px;
+    padding-left: 12px;
+    border-bottom: 1px solid var(--border-color);
+
+    display: flex;
+    align-items: center;
+}
+.window .title_bar .title_icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 3px;
+    /* margin-top: -4px; */
+}
+.window .title_bar h2 {
+    font-weight: 600;
+    font-size: 13pt;
+    margin-right: auto;
+    /* margin-left: 6px; */
+}
+.window .title_bar button {
+    width: 40px;
+    height: 100%;
+    color: var(--text);
+}
+.window .title_bar button:hover {
+    background-color: var(--hover-color);
+}
+.window .title_bar button.button_close:hover {
+    background-color: rgb(245, 17, 55);
+    color: white;
+}
+
+/* Content */
+.window .content {
+    width: 100%;
+    height: 100%;
+
+    /* outline: 1px solid red; */
+    user-select: text;
+}
+
+/* Dock */
+#dock {
+    position: absolute;
+    bottom: 0;
+    z-index: 10;
+
+    height: var(--dock-height);
+    width: 100%;
+    background-color: var(--bg-transparent);
+    /* box-shadow: 0 0 12px rgba(0, 0, 0, 0.5); */
+    backdrop-filter: var(--blur);
+
+    display: flex;
+}
+#dock #dock_apps {
+    display: flex;
+}
+#dock button {
+    font-size: 24pt;
+    line-height: 0.95;
+
+    width: 48px;
+    height: 100%;
+
+    transition-property: background-color, transform;
+    transition-duration: 0.05s;
+    transition-timing-function: ease;
+}
+#dock button:hover {
+    background-color: var(--hover-color);
+}
+#dock button:active {
+    transform: translateY(1px);
+    filter: brightness(85%);
+}
+#dock_apps .dock_app { position: relative; }
+#dock_apps .dock_app .dock_indicator {
+    position: absolute;
+    bottom: 0;
+    left: calc(50% - 3px);
+
+    border-radius: 3px 3px 0 0;
+    background-color: transparent;
+    width: 3px;
+    opacity: 0;
+
+    transition-property: width, background-color;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+}
+#dock_apps .dock_app.active {
+    background-color: var(--active-color);
+}
+#dock_apps .dock_app.active .dock_indicator {
+    background-color: var(--text);
+    width: 6px;
+    height: 6px;
+}
+
+/* Home button */
+#button_home {
+    margin-right: 3px;
+}
+
+/* Dock apps */
+#dock button img {
+    width: 32px;
+    height: 100%;
+}
+
+/* File Folder */
+.view_folder {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    overflow: auto;
+}
+.view_folder figure.file {
+    padding: 3px;
+    margin: 6px;
+
+    font-size: 10pt;
+    text-align: center;
+    text-shadow: 0 0 4px black;
+    word-break: break-word;
+    /* overflow: hidden; */
+
+    width: 64px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center top;
+
+    transition-property: transform;
+    transition-duration: 0.05s;
+    transition-timing-function: ease;
+
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+.view_folder figure.file img {
+    width: 100%;
+    max-width: 64px;
+    max-height: 64px;
+    padding: 6px;
+}
+
+.view_folder figure.file:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+.view_folder figure.file:active {
+    transform: translateY(1px);
+    filter: brightness(85%);
+}
+
+.view_folder figure.file:focus,
+.view_folder figure.file:focus-within {
+    background-color: rgba(197, 217, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+
+    overflow: visible;
+}

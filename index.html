@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>notOS</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container" style="background-image: url(./assets/wallpaper/se1.png)">
+
+        <!-- Desktop -->
+        <div id="desktop" class="view_folder state_icon" data-directory="~/desktop">
+
+            <!-- <figure class="file" data-directory="~/desktop/Example.txt" ondblclick="openFile(event)" role="button" tabindex="0">
+                <img src="./assets/icon/blank_document.png" alt="Example.txt">
+                <figcaption>Example.txt</figcaption>
+            </figure> -->
+
+        </div>
+
+        <!-- Applications -->
+        <div id="app_container">
+
+            <!-- sample -->
+            <!-- <div class="window app_files" data-process="5" data-app="files" data-open-file="~/desktop/Example.txt" style="width: 800px; height: 500px; top: 48; left: 48; z-index: 1;">
+                <div class="title_bar">
+                    <img src="./assets/icon/icons8-file-folder-48.png" alt="" class="title_icon">
+                    <h2>Files</h2>
+                    
+            <button onclick="windowAction('min', 5)">_</button>
+            <button onclick="windowAction('max', 5)">[]</button>
+            <button class="button_close" onclick="windowAction('close', 5)">X</button>
+                </div>
+    
+                <div class="content">
+                    
+                    <style>
+                        .app_files .content {
+                            padding: 6px 8px;
+                            display: flex;
+                            flex-direction: column;
+                        }
+                        .app_files .content .status_bar {
+                            border-top: 1px solid var(--border-color);
+                            padding-top: 3px;
+                        }
+                        .app_files .content .inner {
+                            width: 100%;
+                            height: 100%;
+                            margin-bottom: 6px;
+
+                            display: flex;
+                        }
+                        .app_files .content .pane {
+                            width: 100%;
+                            max-width: 200px;
+                            border-right: 1px solid var(--border-color);
+                        }
+
+                    </style>
+    
+                    <div class="options">
+                        BUTTONS GO HERE 
+                    </div>
+
+                    <div class="inner">
+                        <div class="pane">
+
+                        </div>
+                        <div class="view_folder state_icon" data-directory="~/desktop">
+
+                        </div>
+                    </div>
+                    <div class="status_bar">11 files</div>
+                </div>
+            </div> -->
+
+        </div>
+
+        <!-- Dock -->
+        <div id="dock">
+            <button id="button_home" onclick="menu('home')">
+                •
+            </button>
+            <div id="dock_apps">
+                <!-- <button id="dock_notes" class="dock_app" onclick="launch('notes', undefined, { open_existing: true, })">
+                    <img src="./assets/icon/Bloc_Notes_SZ.png" alt="">
+                    <div class="dock_indicator"></div>
+                </button> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="file_system.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
