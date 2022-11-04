@@ -8,7 +8,7 @@ var file_system = {
         'Another file.txt': {
             data: 'another file!!!!!!!!11!1!'
         },
-        'SE wallpaper.img': {
+        'se1.png': {
             data: './assets/wallpaper/se1.png',
         },
         'sml.txt': {
@@ -23,6 +23,23 @@ var file_system = {
         'A Document.txt': {
             data: 'Important information',
         },
+        'Folder': {
+            type: 'dir',
+            'important folder stuff.txt': {
+                data: 'very important',
+            }
+        }
+    },
+    'pictures': {
+        type: 'dir',
+        'se1.png': { data: './assets/wallpaper/se1.png', },
+        'scr00016.png': { data: './assets/wallpaper/scr00016.png', },
+        'scr00023.png': { data: './assets/wallpaper/scr00023.png', },
+        'scr00030.png': { data: './assets/wallpaper/scr00030.png', },
+        'scr00040.png': { data: './assets/wallpaper/scr00040.png', },
+        'scr00067.png': { data: './assets/wallpaper/scr00067.png', },
+        'scr00121.png': { data: './assets/wallpaper/scr00121.png', },
+        'scr00142.png': { data: './assets/wallpaper/scr00142.png', },
     },
     'apps': {
         type: 'dir',
@@ -94,6 +111,7 @@ var file_system = {
                     <div class="pane">
                         <button class="active" data-directory-button="~/desktop">Desktop</button>
                         <button data-directory-button="~/documents">Documents</button>
+                        <button data-directory-button="~/pictures">Pictures</button>
                         <button data-directory-button="~/apps">Apps</button>
                         <button data-directory-button="~/system">System</button>
                     </div>
@@ -108,7 +126,7 @@ var file_system = {
                 proc.memory.navigate = dir => {
                     let container = document.querySelector(`#app_container .window[data-process="${proc.id}"] .view_folder`);
                     container.setAttribute("data-directory", dir);
-                    populateFolder(dir);
+                    populateFolder(dir, proc);
                 }
 
                 // Buttons
@@ -123,7 +141,7 @@ var file_system = {
                     })
                 })
 
-                populateFolder(path);
+                populateFolder(path, proc);
             },
 
             window: {
@@ -276,7 +294,12 @@ var file_system = {
         'config': {
             file_association: {
                 'txt': 'notes',
-                'img': 'images'
+
+                'img':  'images',
+                'png':  'images',
+                'jpg':  'images',
+                'jpeg': 'images',
+                'gif':  'images',
             },
             dock: {
                 'pinned': [

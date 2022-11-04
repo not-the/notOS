@@ -178,8 +178,13 @@ function menu(id) {
 function openFile(event) {
     let element = event.srcElement;
     if(element.tagName != 'FIGURE') element = element.parentNode;
+    console.log(element);
 
     let path = element.dataset.directory;
+    if(isFolder(getFile(path))) {
+        let proc = processes[element.dataset.process];
+        proc.memory.navigate(path);
+    };
 
     // Normal file
     let file_ext = path.split('.')[1];
@@ -219,10 +224,14 @@ function populateDock() {
     document.getElementById('dock_apps').innerHTML = html;
 }
 
+function isFolder(file) {
+    return file.type == 'dir';
+}
+
 /** Populate folder */
-function populateFolder(path='~/desktop') {
+function populateFolder(path='~/desktop', proc={id:-1}) {
     let folder = getFile(path);
-    if(folder.type != 'dir') return console.warn(`(${path}) is not a folder`);
+    if(!isFolder(folder)) return console.warn(`(${path}) is not a folder`);
     let html = '';
 
     for(filename in folder) {
@@ -239,21 +248,53 @@ function populateFolder(path='~/desktop') {
     function template(path, filename, file) {
         let app = fileAssociation(filename);
         let icon;
-        try { icon = file_system.apps[app]['file_icon']
+        try {
+            icon = file_system.apps[app]['file_icon'];
         } catch (error) {
+            if(isFolder(file)) icon = './assets/icon/icons8-file-folder-48.png'
             console.warn(error);
         }
         if(icon == undefined) icon = './assets/icon/blank_document.png';
         return `
-        <figure class="file" data-directory="${path}/${filename}" ondblclick="openFile(event)" role="button" tabindex="0">
+        <figure class="file" data-process="${proc.id}" data-directory="${path}/${filename}" role="button" tabindex="0" ondblclick="openFile(event)" oncontextmenu="contextMenu(event)">
             <img src="${icon}" alt="${filename}">
             <figcaption>${filename}</figcaption>
         </figure>`;
     }
 }
 
+const context_menu_container = document.getElementById('context_menu_container');
+const context_menu = document.getElementById('context_menu');
+/** Context menu */
+function contextMenu(event) {
+    event.preventDefault();
+    let source = event.srcElement;
+    console.log(source);
 
+    let y = pY;
+    let x = pX;
+    let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    if(x + 240 >= vw) x = vw - 240;
 
+    // Update page
+    // populateContextMenu(event.srcElement.id);
+    context_menu.style.top = `${y}px`;
+    context_menu.style.left = `${x}px`;
+    context_menu.focus();
+
+    /** Populate context menu */
+    function populateContextMenu(id) {
+        let html = '';
+        let data = contextData?.[id];
+        if(data == undefined) return;
+        for(i = 0; i < data.length; i++) {
+            console.log(data.name);
+            console.log(data.code);
+            html += `<div class="context_item" tabindex="0" role="button" onclick="${data.code}">${data.name}</div>`;
+        }
+        context_menu.innerHTML = html;
+    }
+}
 
 document.addEventListener('mouseup', () => {
     let proc = processes[dragging];
