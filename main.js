@@ -181,7 +181,7 @@ function openFile(event) {
     console.log(element);
 
     let path = element.dataset.directory;
-    if(isFolder(getFile(path))) {
+    if(isFolder(path)) {
         let proc = processes[element.dataset.process];
         proc.memory.navigate(path);
     };
@@ -189,13 +189,7 @@ function openFile(event) {
     // Normal file
     let file_ext = path.split('.')[1];
     if(typeof file_ext != 'string') return console.warn('Invalid file extension');
-    // if(file_ext == undefined) {
-    //     let split = path.split('/');
-    //     let name = split[split.length];
-    //     return launch(name);
-    // }
     let app = fileAssociation(path);
-    
     launch(app, path);
 }
 
@@ -224,9 +218,7 @@ function populateDock() {
     document.getElementById('dock_apps').innerHTML = html;
 }
 
-function isFolder(file) {
-    return file.type == 'dir';
-}
+function isFolder(file) { if(typeof file == 'string') file = getFile(file); return file.type == 'dir'; }
 
 /** Populate folder */
 function populateFolder(path='~/desktop', proc={id:-1}) {
@@ -249,7 +241,8 @@ function populateFolder(path='~/desktop', proc={id:-1}) {
         let app = fileAssociation(filename);
         let icon;
         try {
-            icon = file_system.apps[app]['file_icon'];
+            if(app == 'images') icon = file.data;
+            else icon = file_system.apps[app]['file_icon'];
         } catch (error) {
             if(isFolder(file)) icon = './assets/icon/icons8-file-folder-48.png'
             console.warn(error);

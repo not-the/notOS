@@ -283,7 +283,7 @@ body {
 .view_folder figure.file img {
     width: 100%;
     max-width: 64px;
-    max-height: 64px;
+    height: 64px;
     padding: 6px;
 }
 

@@ -1,0 +1,6 @@
+v1.1
+- Images now use themselves as their thumbnail
+
+v1
+Desktop, Dock, Folders
+Notes, Images, Files and, Dialog apps
