@@ -1,4 +1,10 @@
 v1.1
+- General updates and fixes
+- Added web browser
+- Clicking a window will now bring it to the front
+- Fixed dock icons not appearing
+
+v1.1
 - Images now use themselves as their thumbnail
 
 v1

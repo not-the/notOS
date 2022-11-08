@@ -29,6 +29,8 @@ const process_template = {
 var processes = {}
 var pid = 1;
 
+var temp_z = 1;
+
 var dragging = false;
 let dragOffset = {
     x: 0,
@@ -52,7 +54,18 @@ function getFile(file) {
 }
 
 /** Launches an application */
-function launch(name='notes', file, options) {
+function launch(name='notes', file, open_existing=false) {
+    // Existing process
+    console.log(open_existing);
+    if(open_existing == true) {
+        let dockicon = document.querySelector('#dock .dock_app[data-process]');
+        if(dockicon != null) {
+            let proc = processes[dockicon.dataset.process];
+            console.log(proc);
+            return;
+        }
+    }
+
     let app = file_system.apps[name];
 
     if(app == undefined) return console.warn('Application does not exist');
@@ -75,6 +88,10 @@ function launch(name='notes', file, options) {
     container.append(wrapper.firstElementChild);
     proc.element = document.querySelector(`#app_container .window[data-process="${proc.id}"]`);
 
+    // Temporary Z-Index
+    proc.element.addEventListener('click', () => {proc.element.style.zIndex = temp_z; temp_z++;})
+    proc.element.style.zIndex = temp_z; temp_z++;
+
     // Title bar
     let titlebar = document.querySelector(`#app_container .window[data-process="${proc.id}"] > .title_bar`);
     titlebar.addEventListener('mousedown', event => {
@@ -90,7 +107,10 @@ function launch(name='notes', file, options) {
 
     // Update dock
     let dockicon = document.getElementById(`dock_${name}`);
-    if(dockicon != null) dockicon.classList.add('active');
+    if(dockicon != null) {
+        dockicon.classList.add('active');
+        dockicon.dataset.process = proc.id;
+    };
 
     // Script
     if(app.script != undefined) app.script('start', proc, file);
@@ -209,8 +229,8 @@ function populateDock() {
         let app = file_system.apps[name];
         if(app == undefined) { console.warn('Dock: app doesnt exist'); continue; }
         html += `
-        <button id="dock_${name}" class="dock_app" onclick="launch('${name}', undefined, { open_existing: true, })">
-            <img src=".${app.icon}" alt="">
+        <button id="dock_${name}" class="dock_app" onclick="launch('${name}', undefined, true)">
+            <img src="${app.icon}" alt="">
             <div class="dock_indicator"></div>
         </button>`;
     }

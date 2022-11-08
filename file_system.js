@@ -225,9 +225,10 @@ var file_system = {
                         display: flex;
                         flex-direction: column;
                         justify-content: center;
+                        overflow: hidden;
                     }
                     .app_images .content .viewer_image {
-
+                        max-height: 100%;
                     }
                 </style>
 
@@ -286,7 +287,60 @@ var file_system = {
 
                 allow_actions: false,
             }
-        }
+        },
+
+        'browser': {
+            title: 'Browser',
+            icon: './assets/icon/moon.svg',
+            file_icon: './assets/icon/Antu_google-draws.svg',
+            html: /*html*/ `
+                <style>
+                    .app_browser .content iframe {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    .app_browser .content .browser_bar {
+                        display: flex;
+                    }
+                    .app_browser .content .url_bar {
+                        width: 100%;
+                        padding: 8px 12px;
+                        background-color: unset;
+                        border: none;
+                        color: var(--text);
+                        font-size: 11pt;
+                    }
+                </style>
+
+                <div class="browser_bar">
+                    <!-- <button class="browser_back">Back</button>
+                    <button class="browser_forward">Forward</button> -->
+                    <input type="url" name="url_bar" id="url_bar" class="url_bar" value="">
+                </div>
+                <iframe src="" frameborder="0"></iframe>
+            `,
+            script: (stage, proc, url="https://www.bing.com/") => {
+                let iframe = document.querySelector(`#app_container .window[data-process="${proc.id}"] .content iframe`);
+                iframe.src = url;
+
+                let url_bar = document.querySelector(`#app_container .window[data-process="${proc.id}"] .content input.url_bar`);
+                url_bar.value = url;
+
+                // proc.memory.back = e => iframe.contentWindow.history.back();
+                // proc.memory.forward = e => iframe.contentWindow.history.forward();
+                // proc.memory.go = to => iframe.src = to;
+
+                // let browser_back = document.querySelector(`#app_container .window[data-process="${proc.id}"] .content .browser_back`);
+                // let browser_forward = document.querySelector(`#app_container .window[data-process="${proc.id}"] .content .browser_forward`);
+                // browser_back.addEventListener('click', () => { proc.memory.back(); });
+                // browser_forward.addEventListener('click', () => { proc.memory.forward(); });
+            },
+
+            window: {
+                width: '800',
+                height: '600',
+            },
+        },
     },
     'system': {
         type: 'dir',
@@ -304,6 +358,7 @@ var file_system = {
             dock: {
                 'pinned': [
                     'files',
+                    'browser',
                     'notes',
                     'images',
                 ]
