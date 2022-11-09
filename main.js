@@ -57,17 +57,16 @@ function getFile(file) {
 function launch(name='notes', file, open_existing=false) {
     // Existing process
     console.log(open_existing);
-    if(open_existing == true) {
-        let dockicon = document.querySelector('#dock .dock_app[data-process]');
-        if(dockicon != null) {
-            let proc = processes[dockicon.dataset.process];
-            console.log(proc);
-            return;
-        }
-    }
+    // if(open_existing == true) {
+    //     let dockicon = document.querySelector('#dock .dock_app[data-process]');
+    //     if(dockicon != null) {
+    //         let proc = processes[dockicon.dataset.process];
+    //         console.log(proc);
+    //         return;
+    //     }
+    // }
 
     let app = file_system.apps[name];
-
     if(app == undefined) return console.warn('Application does not exist');
 
     // Create process

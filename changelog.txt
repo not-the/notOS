@@ -1,4 +1,7 @@
-v1.1
+v1.2.1
+- Directory now appears at the bottom of Files
+
+v1.2
 - General updates and fixes
 - Added web browser
 - Clicking a window will now bring it to the front

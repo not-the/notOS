@@ -58,6 +58,9 @@ var file_system = {
                     .app_files .content .status_bar {
                         border-top: 1px solid var(--border-color);
                         padding-top: 3px;
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
                     }
                     .app_files .content .inner {
                         width: 100%;
@@ -119,13 +122,19 @@ var file_system = {
 
                     </div>
                 </div>
-                <div class="status_bar">11 files</div>
+                <div class="status_bar">
+                    <span class="file_count">11 files</span>
+                    <span class="path_name">#path</span>
+                    <span class="file_count">Stuff</span>
+                </div>
             `,
-            script: (stage='start', proc, path) => {
+            script: (stage='start', proc, path='~/desktop') => {
                 // Navigate function
                 proc.memory.navigate = dir => {
                     let container = document.querySelector(`#app_container .window[data-process="${proc.id}"] .view_folder`);
                     container.setAttribute("data-directory", dir);
+                    let path_name = document.querySelector(`#app_container .window[data-process="${proc.id}"] .path_name`);
+                    path_name.innerText = dir;
                     populateFolder(dir, proc);
                 }
 
@@ -141,7 +150,7 @@ var file_system = {
                     })
                 })
 
-                populateFolder(path, proc);
+                proc.memory.navigate(path);
             },
 
             window: {
