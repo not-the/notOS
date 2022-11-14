@@ -6,3 +6,4 @@
 
 **To-do:**
 - [ ] Accept dragged images as a way to create an image file (?)
+- [ ] Backdrop blur effect not on mobile
