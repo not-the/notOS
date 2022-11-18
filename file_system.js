@@ -46,8 +46,8 @@ var file_system = {
 
         'files.app': {
             title: 'Files',
-            icon: './assets/icon/icons8-file-folder-48.png',
-            file_icon: './assets/icon/icons8-file-folder-48.png',
+            icon: './assets/icon/files.svg',
+            file_icon: './assets/icon/folder.svg',
             html: /*html*/ `
                 <style>
                     .app_files .content {

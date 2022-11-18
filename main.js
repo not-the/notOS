@@ -269,7 +269,7 @@ function populateFolder(path='~/desktop', proc={id:-1}) {
             else if(app == 'self') icon = file_system.apps[filename].icon;
             else icon = file_system.apps[app]['file_icon'];
         } catch (error) {
-            if(isFolder(file)) icon = './assets/icon/icons8-file-folder-48.png'
+            if(isFolder(file)) icon = file_system.apps['files.app'].file_icon
             console.warn(error);
         }
         if(icon == undefined) icon = './assets/icon/blank_document.png';

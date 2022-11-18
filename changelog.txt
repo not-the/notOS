@@ -1,3 +1,8 @@
+v1.2.3
+- Gave files app a new icon
+- Gave folders a new icon
+- Fixed the desktop being scrollable when not necessary
+
 v1.2.2
 - Apps now have the .app file extension and can be double click opened
 - Apps in file views now use their icons as a thumbnail

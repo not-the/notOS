@@ -149,7 +149,7 @@ body {
 .window .title_bar .title_icon {
     width: 24px;
     height: 24px;
-    margin-right: 3px;
+    margin-right: 8px;
     /* margin-top: -4px; */
 }
 .window .title_bar h2 {
@@ -178,6 +178,12 @@ body {
 
     /* outline: 1px solid red; */
     user-select: text;
+}
+
+/* Desktop */
+#desktop {
+    width: 100%;
+    height: calc(100vh - var(--dock-height));
 }
 
 /* Dock */
@@ -248,6 +254,7 @@ body {
 /* Dock apps */
 #dock button img {
     width: 32px;
+    padding: 0 2px 2px 2px;
     height: 100%;
 }
 
