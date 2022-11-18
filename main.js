@@ -22,7 +22,7 @@ const process_template = {
     z: 1,
     allow_actions: true,
 
-    app: 'notes',
+    app: 'notes.app',
     id: 1,
     element: undefined,
 }
@@ -54,7 +54,7 @@ function getFile(file) {
 }
 
 /** Launches an application */
-function launch(name='notes', file, open_existing=false) {
+function launch(name='notes.app', file, open_existing=false) {
     // Existing process
     console.log(open_existing);
     // if(open_existing == true) {
@@ -118,12 +118,13 @@ function launch(name='notes', file, open_existing=false) {
     /** Template */
     function appHTML(app, proc) {
         let icon = app.icon == false ? '' : `<img src="${app.icon}" alt="" class="title_icon">`;
+        let name_raw = proc.app.split('.')[0];
         let title_buttons = proc.allow_actions == false ? '' : `
         <button onclick="windowAction('min', ${proc.id})">_</button>
         <button onclick="windowAction('max', ${proc.id})">[]</button>
         <button class="button_close" onclick="windowAction('close', ${proc.id})">X</button>`;
         return `
-        <div class="window app_${proc.app}" data-process="${proc.id}" data-app="${proc.app}" data-open-file="~/desktop/Example.txt" style="width: ${proc.width}px; height: ${proc.height}px; top: ${proc.y}; left: ${proc.x}; z-index: ${proc.z};">
+        <div class="window app_${name_raw}" data-process="${proc.id}" data-app="${name_raw}" data-open-file="~/desktop/Example.txt" style="width: ${proc.width}px; height: ${proc.height}px; top: ${proc.y}; left: ${proc.x}; z-index: ${proc.z};">
             <!-- Title bar -->
             <div class="title_bar">
                 ${icon}
@@ -197,17 +198,21 @@ function menu(id) {
 function openFile(event) {
     let element = event.srcElement;
     if(element.tagName != 'FIGURE') element = element.parentNode;
-    console.log(element);
+    // console.log(element);
 
     let path = element.dataset.directory;
     if(isFolder(path)) {
         let proc = processes[element.dataset.process];
         proc.memory.navigate(path);
     };
+    let [leftover, file_ext] = path.split('.');
+    if(typeof file_ext != 'string') return console.warn('Invalid file extension');
+
+    // .app
+    console.log(leftover.split('/')[2]);
+    if(file_ext == 'app') return launch(`${leftover.split('/')[2]}.app`);
 
     // Normal file
-    let file_ext = path.split('.')[1];
-    if(typeof file_ext != 'string') return console.warn('Invalid file extension');
     let app = fileAssociation(path);
     launch(app, path);
 }
@@ -260,7 +265,8 @@ function populateFolder(path='~/desktop', proc={id:-1}) {
         let app = fileAssociation(filename);
         let icon;
         try {
-            if(app == 'images') icon = file.data;
+            if(app == 'images.app') icon = file.data;
+            else if(app == 'self') icon = file_system.apps[filename].icon;
             else icon = file_system.apps[app]['file_icon'];
         } catch (error) {
             if(isFolder(file)) icon = './assets/icon/icons8-file-folder-48.png'
@@ -273,6 +279,8 @@ function populateFolder(path='~/desktop', proc={id:-1}) {
             <figcaption>${filename}</figcaption>
         </figure>`;
     }
+
+    return Object.keys(folder).length - 1;
 }
 
 const context_menu_container = document.getElementById('context_menu_container');

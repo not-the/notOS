@@ -191,7 +191,7 @@ body {
     background-color: var(--bg-transparent);
     backdrop-filter: var(--blur);
     border-top: 1px solid var(--border-color);
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+    /* box-shadow: 0 0 12px rgba(0, 0, 0, 0.5); */
 
     display: flex;
 }

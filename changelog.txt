@@ -1,3 +1,8 @@
+v1.2.2
+- Apps now have the .app file extension and can be double click opened
+- Apps in file views now use their icons as a thumbnail
+- Amount of files in a folder now shows at the bottom of files
+
 v1.2.1
 - Directory now appears at the bottom of Files
 

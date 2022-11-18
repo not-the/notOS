@@ -44,7 +44,7 @@ var file_system = {
     'apps': {
         type: 'dir',
 
-        'files': {
+        'files.app': {
             title: 'Files',
             icon: './assets/icon/icons8-file-folder-48.png',
             file_icon: './assets/icon/icons8-file-folder-48.png',
@@ -62,6 +62,7 @@ var file_system = {
                         justify-content: space-between;
                         width: 100%;
                     }
+                    .app_files .content .status_bar > span { flex: 1; }
                     .app_files .content .inner {
                         width: 100%;
                         height: 100%;
@@ -123,9 +124,9 @@ var file_system = {
                     </div>
                 </div>
                 <div class="status_bar">
-                    <span class="file_count">11 files</span>
                     <span class="path_name">#path</span>
-                    <span class="file_count">Stuff</span>
+                    <span class="file_count">null items</span>
+                    <span class="">Stuff</span>
                 </div>
             `,
             script: (stage='start', proc, path='~/desktop') => {
@@ -133,9 +134,12 @@ var file_system = {
                 proc.memory.navigate = dir => {
                     let container = document.querySelector(`#app_container .window[data-process="${proc.id}"] .view_folder`);
                     container.setAttribute("data-directory", dir);
+
                     let path_name = document.querySelector(`#app_container .window[data-process="${proc.id}"] .path_name`);
                     path_name.innerText = dir;
-                    populateFolder(dir, proc);
+
+                    let file_count = document.querySelector(`#app_container .window[data-process="${proc.id}"] .file_count`);
+                    file_count.innerText = `${populateFolder(dir, proc)} items`;
                 }
 
                 // Buttons
@@ -159,7 +163,7 @@ var file_system = {
             },
         },
 
-        'notes': {
+        'notes.app': {
             title: 'Notes',
             icon: './assets/icon/Bloc_Notes_SZ.png',
             file_icon: './assets/icon/blank_document.png',
@@ -223,7 +227,7 @@ var file_system = {
                 height: '600',
             },
         },
-        'images': {
+        'images.app': {
             title: 'Image Viewer',
             icon: './assets/icon/Antu_google-draws.svg',
             file_icon: './assets/icon/Antu_google-draws.svg',
@@ -255,7 +259,7 @@ var file_system = {
                 height: '600',
             },
         },
-        'dialog': {
+        'dialog.app': {
             title: 'Dialog',
             icon: false,
             html: /*html*/ `
@@ -298,7 +302,7 @@ var file_system = {
             }
         },
 
-        'browser': {
+        'browser.app': {
             title: 'Browser',
             icon: './assets/icon/moon.svg',
             file_icon: './assets/icon/Antu_google-draws.svg',
@@ -356,20 +360,22 @@ var file_system = {
 
         'config': {
             file_association: {
-                'txt': 'notes',
+                'txt': 'notes.app',
 
-                'img':  'images',
-                'png':  'images',
-                'jpg':  'images',
-                'jpeg': 'images',
-                'gif':  'images',
+                'img':  'images.app',
+                'png':  'images.app',
+                'jpg':  'images.app',
+                'jpeg': 'images.app',
+                'gif':  'images.app',
+
+                'app':  'self',
             },
             dock: {
                 'pinned': [
-                    'files',
-                    'browser',
-                    'notes',
-                    'images',
+                    'files.app',
+                    'browser.app',
+                    'notes.app',
+                    'images.app',
                 ]
             },
         }
